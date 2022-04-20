@@ -1,0 +1,4 @@
+/.git
+**/*
+!/target/bin/linux/amd64/**
+!/migrations/sql/**

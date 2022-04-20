@@ -1,0 +1,53 @@
+{{- if not .Values.canary}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-migrator"
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version | replace "+" "-g" }}
+    app.kubernetes.io/component: service
+    helm.sh/chart: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "-" }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  activeDeadlineSeconds: 180
+  backoffLimit: 0
+  template:
+    metadata:
+      name: "{{.Release.Name}}-migrator"
+      labels:
+        app.kubernetes.io/name: {{ .Chart.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version | replace "+" "-g" }}
+        app.kubernetes.io/component: service
+        helm.sh/chart: {{ .Chart.Name }}
+        app: "{{ .Chart.Name }}-migrator"
+        name: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "-" }}
+        release: {{.Release.Name | quote }}
+        heritage: {{.Release.Service | quote }}
+
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrator
+          image: {{ .Values.deployment.migrationImage | quote }}
+          env:
+            # TODO: Database details, application dependent
+            - name: DATABASE_HOST
+              value: "ex-service-template.db.infra.circleci.com"
+            - name: DATABASE_USER
+              value: user
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: db.pass
+                  name: ex-service-template-secrets-v1
+            - name: DATABASE_NAME
+              value: "ex-service-template"
+  {{- end }} 

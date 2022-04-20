@@ -1,0 +1,313 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@4.4.4
+
+workflows:
+  main-workflow:
+    jobs:
+      - lint
+      - test
+      - build
+      - db-schema:
+          context: org-global
+      - TODO-migrator-image:
+          context: org-global
+      - TODO-docker-image:
+          context: org-global
+          requires:
+            - lint
+            - test
+            - build
+      # TODO: Uncomment this job after setting a value for parameters.release-name and deploying the service.
+      # This job will need at least one deployed version of the service to compare the Helm chart diff during the dry run.
+      # - TODO-helm-package-dry-run:
+      #     context: [org-global, github-comments]
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
+      - TODO-deploy:
+          context: [org-global, slack-notifications]
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - lint
+            - test
+            - build
+            - TODO-migrator-image
+            - TODO-docker-image
+            - db-schema 
+
+executors:
+  default:
+    docker:
+      - image: &goimage cimg/go:1.18
+  ccc:
+    docker:
+      - image: circleci/command-convenience:0.1
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+    environment:
+      NAME: << pipeline.parameters.release-name >>
+      DOCKERFILE_PATH: Dockerfile
+      CUSTOM_CHART: deploy
+
+parameters: 
+  release-name:
+    type: string
+    default: "" # TODO: Change me to run helm-package-dry-run and deploy
+  release-version:
+    type: string
+    default: "v1"
+
+jobs:
+  lint:
+    docker:
+      - image: *goimage
+    resource_class: large
+    steps:
+      - setup
+      - run:
+          name: generate
+          command: ./do generate
+      - run:
+          name: go tidy
+          command: go mod tidy -v
+      - run:
+          name: verify no changes
+          command: git diff --ignore-matching-lines='Generated on ' --exit-code
+      - run: ./do lint-report
+      - store_results
+
+  build:
+    docker:
+      - image: *goimage
+    resource_class: large
+    steps:
+      - setup
+      - run: ./do generate
+      - run: ./do build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - target
+
+  TODO-migrator-image:
+    executor: ccc
+    environment:
+      NAME: ex-service-template-migrator ## TODO replace by your-service-name-migrator
+      DOCKERFILE_PATH: ""
+      MIGRATIONS_SQL_PATH: "migrations/sql"
+      IMAGE_NAME: "circleci/ex-service-template-migrator" ## TODO replace by circleci/your-service-name-migrator
+    steps:
+      - when:
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - create_and_scan_docker_image
+            - run: mv docker_image.tag docker_image.migrator.tag
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - docker_image.migrator.tag
+      - unless:
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - run: echo add release-name to enable this job
+
+  TODO-docker-image:
+    executor: ccc
+    steps:
+      - when:
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - checkout
+            - attach_workspace:
+                at: .
+            - create_and_scan_docker_image
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - docker_image.tag
+      - unless:
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - run: echo add release-name to enable this job
+
+  test:
+    docker:
+      - image: *goimage
+      - image: circleci/postgres:13.3-ram
+        environment:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: dbname
+    resource_class: large
+    steps:
+      - setup
+      - run: ./do create-stub-test-files
+      - run:
+          name: run tests
+          command: ./do test ./...
+      - store_results
+
+  db-schema:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - checkout
+      - run:
+          name: docker login
+          command: >
+            echo $DOCKER_HUB_PASSWORD |
+            docker login --username $DOCKER_HUB_USER --password-stdin
+      - run: ./do schema
+      - run:
+          name: Check that the DB schema dump matches migrations
+          command: |
+            # If the `diff` exit code is not zero, the migrations/schema.sql file is
+            # out-of date.
+            # Run ./do schema locally to update it
+            git diff --exit-code
+  
+  TODO-deploy:
+    executor: ccc
+    # TODO - uncomment the code below once you've defined the release-name parameter
+    # environment:
+    #   AWS_DEFAULT_REGION: us-east-1
+    #   RELEASE_VERSION: << pipeline.parameters.release-version >>
+    steps:
+      - when: 
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - checkout
+            - attach_workspace:
+                at: .
+            # TODO - uncomment this code to enable migrations, this will run before every deploy, replace ex-service-template-migrator with your-service-name-migrator
+            # - run:
+            #     name: substitute migrator values
+            #     command: |
+            #       MIGRATOR_VERSION="$(< docker_image.migrator.tag)"
+            #       sed -i.bak "s|\<<migrator_image_name>>|183081753049.dkr.ecr.us-east-1.amazonaws.com/circleci/ex-service-template-migrator:${MIGRATOR_VERSION}|g" deploy/values.yaml
+            - run: deploy
+            - notify_slack
+            - notify_honeycomb
+      - unless: 
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - run: echo add release-name to enable this job
+
+  TODO-helm-package-dry-run:
+    executor: ccc
+    steps:
+      - when:
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - checkout
+            - run:
+                name: Override container version & dry run
+                command: |
+                  IGNORE_VERSION=1 /deploy/dry-run
+                  ls -la .helm.diff
+            - run:
+                name: Install GitHub CLI
+                command: |
+                  curl -fsSL 'https://github.com/cli/cli/releases/download/v1.11.0/gh_1.11.0_linux_amd64.tar.gz' | tar -C /usr/local --strip-components=1 -xz
+            - run:
+                name: Comment on pull request
+                command: |
+                  if [ ! -s ".helm.diff" ]
+                  then
+                    echo "No diff found"
+                    exit 0
+                  fi
+                  if [ ! -n "$CI_PULL_REQUEST" ]
+                  then
+                    echo "No PR found"
+                    exit 0
+                  fi
+                  echo "## Helm diff: <sup>[CI link]( $CIRCLE_BUILD_URL )</sup>" > comment.txt
+                  echo '<details><summary>Details (click me)</summary>' >> comment.txt
+                  echo '' >> comment.txt
+                  echo '```diff' >> comment.txt
+                  cat '.helm.diff' >> comment.txt
+                  echo '```' >> comment.txt
+                  echo '</details>' >> comment.txt
+                  echo "Commenting on ${CI_PULL_REQUEST}"
+                  gh pr comment "${CI_PULL_REQUEST}" --body-file comment.txt
+      - unless: 
+          condition: << pipeline.parameters.release-name >>
+          steps:
+            - run: echo add release-name to enable this job
+
+commands:
+  notify_slack:
+    steps:
+      - slack/notify:
+          channel: your-teams-deployment-channel #TODO: update this to your team's deployment channel. 
+          branch_pattern: main
+          event: pass
+          template: success_tagged_deploy_1
+                
+  notify_honeycomb:
+    steps:
+      - run:
+          name: Notify Honeycomb
+          command: |
+            cat \<< EOF | tee /tmp/honeycomb-marker
+            {
+              "message": "Deploying ex-service-template $(<docker_image.tag)",
+              "type":"deploy"
+            }
+            EOF
+            curl https://api.honeycomb.io/1/markers/execution \
+              -H "X-Honeycomb-Team: $HONEYCOMB_WRITEKEY" \
+              -d @/tmp/honeycomb-marker
+
+  setup:
+    steps:
+      - checkout
+      - run: go mod download
+      - run: ./do install-devtools
+
+  store_results:
+    steps:
+      - run:
+          name: Strip ANSI codes from xunit output
+          when: always
+          command: |
+            # The test output produces ANSI codes, which the XML writer converts into annoying
+            # \0xfffd characters - we'll strip these out to make the XML a bit more readable
+            sed -i 's/�\[[0-9;]*[a-zA-Z]//g' test-reports/*.xml || true
+      - store_artifacts:
+          path: test-reports
+      - store_test_results:
+          path: test-reports
+
+  remote_docker:
+    steps:
+      - setup_remote_docker
+      - run: docker version
+
+  create_and_scan_docker_image:
+    steps:
+      - remote_docker
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: create and scan docker image
+          command: |
+            set -x
+            if [[ "$CIRCLE_BRANCH" = "main" || "$CIRCLE_BRANCH" = "canary" ]]; then
+              # TODO change to all once dockerhub repo is ready
+              export DOCKER_REGISTRY=ecr
+            else
+              # this is how we tell CCC not to actually publish
+              export DOCKER_REGISTRY=none
+            fi
+
+            publish

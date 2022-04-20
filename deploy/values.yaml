@@ -1,0 +1,22 @@
+
+deployment:
+  # Don't edit this, it's required by CD script
+  image: "<<image_name>>"
+  migrationImage: "<<migrator_image_name>>"
+
+# This value is updated by CD on the canary branch
+canary: false
+
+
+deployments:
+  api:
+    cmd: /api
+    name: api
+    autoscaling:
+      minReplicas: 2
+      maxReplicas: 16
+    minAvailable: "50%"
+    ports:
+      - containerPort: 8000
+        name: api
+        protocol: TCP
