@@ -4,11 +4,11 @@ go 1.18
 
 require (
 	github.com/alecthomas/kong v0.6.0
-	github.com/circleci/ex v1.0.3007-5d0e011
+	github.com/circleci/ex v1.0.3040-70ad322
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	gotest.tools/v3 v3.2.0
+	gotest.tools/v3 v3.3.0
 )
 
 require (
