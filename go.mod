@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/alecthomas/kong v0.6.1
-	github.com/circleci/ex v1.0.3040-70ad322
+	github.com/circleci/ex v1.0.3090-eececfe
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
@@ -38,13 +38,13 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.15.6 // indirect
+	github.com/klauspost/compress v1.15.7 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
-	github.com/rollbar/rollbar-go v1.4.2 // indirect
+	github.com/rollbar/rollbar-go v1.4.4 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
