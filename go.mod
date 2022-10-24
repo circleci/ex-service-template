@@ -4,10 +4,10 @@ go 1.18
 
 require (
 	github.com/alecthomas/kong v0.6.1
-	github.com/circleci/ex v1.0.4666-4d96b9f
+	github.com/circleci/ex v1.0.4735-d12ba6b
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
-	golang.org/x/sync v0.0.0-20220819030929-7fc1605a5dde
+	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 	gotest.tools/v3 v3.4.0
 )
 
@@ -25,7 +25,7 @@ require (
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/hellofresh/health-go/v4 v4.7.0 // indirect
-	github.com/honeycombio/beeline-go v1.10.0 // indirect
+	github.com/honeycombio/beeline-go v1.11.0 // indirect
 	github.com/honeycombio/dynsampler-go v0.2.1 // indirect
 	github.com/honeycombio/libhoney-go v1.17.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -44,7 +44,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/rollbar/rollbar-go v1.4.5 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
@@ -52,7 +51,7 @@ require (
 	go.opentelemetry.io/otel v1.10.0 // indirect
 	go.opentelemetry.io/otel/trace v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
+	golang.org/x/net v0.0.0-20221002022538-bcab6841153b // indirect
 	golang.org/x/sys v0.0.0-20220915200043-7b5979e65e41 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
