@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/alecthomas/kong v0.7.1
-	github.com/circleci/ex v1.0.4948-b7d29a5
+	github.com/circleci/ex v1.0.5099-391e304
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
@@ -14,7 +14,7 @@ require (
 require (
 	github.com/DataDog/datadog-go v4.8.3+incompatible // indirect
 	github.com/Microsoft/go-winio v0.5.0 // indirect
-	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/facebookgo/limitgroup v0.0.0-20150612190941-6abd8d71ec01 // indirect
 	github.com/facebookgo/muster v0.0.0-20150708232844-fd3d7953fd52 // indirect
@@ -27,7 +27,7 @@ require (
 	github.com/hellofresh/health-go/v4 v4.7.0 // indirect
 	github.com/honeycombio/beeline-go v1.11.1 // indirect
 	github.com/honeycombio/dynsampler-go v0.2.1 // indirect
-	github.com/honeycombio/libhoney-go v1.17.1 // indirect
+	github.com/honeycombio/libhoney-go v1.18.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
