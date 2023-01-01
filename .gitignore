@@ -23,3 +23,4 @@ coverage.txt
 secrets
 pkg_test.go
 api/docs/*.html
+.git/
