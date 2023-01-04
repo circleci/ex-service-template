@@ -58,6 +58,9 @@ issues:
     - linters: [gosec]
       text: G107
       path: _test\.go
+    # Duplicated errcheck checks
+    - linters: [revive]
+      text: 'package-comments: should have a package comment'
     # Nil pointers will fail tests anyway
     - linters: [staticcheck]
       text: SA5011
@@ -106,12 +109,13 @@ issues:
     # Duplicate of above
     - linters: [staticcheck]
       text: 'SA4006: this value of `ctx` is never used'
+    - linters: [gocyclo]
+      text: func `TestE2E.*
 
 linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - depguard
     - errcheck
     - funlen
@@ -129,10 +133,8 @@ linters:
     - prealloc
     - revive
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck

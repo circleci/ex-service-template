@@ -84,6 +84,13 @@ test() {
 
 # This variable is used, but shellcheck can't tell.
 # shellcheck disable=SC2034
+help_run_goimports="Run goimports for package"
+run-goimports () {
+  ./bin/gosimports -local "github.com/circleci/ex-service-template" -w
+}
+
+# This variable is used, but shellcheck can't tell.
+# shellcheck disable=SC2034
 help_godoc="Run godoc to read documentation."
 godoc() {
     install-go-bin "golang.org/x/tools/cmd/godoc@v0.1.3"
@@ -101,21 +108,27 @@ go-mod-tidy() {
     go mod tidy -v
 }
 
+install-go-bin() {
+    local binDir="$PWD/bin"
+    for pkg in "${@}"; do
+        echo "${pkg}"
+        (
+          cd tools
+          GOBIN="${binDir}" go install "${pkg}"
+        )
+    done
+}
 
 # This variable is used, but shellcheck can't tell.
 # shellcheck disable=SC2034
-help_install_devtools="Install tools required for doing dev stuff"
+help_install_devtools="Install tools that other tasks expect into ./bin"
 install-devtools() {
-    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.45.2
-    install-go-bin \
-        "gotest.tools/gotestsum@v1.8.0"
-}
+    local tools=()
+    while IFS='' read -r value; do
+        tools+=("$value")
+    done < <(grep _ tools/tools.go | awk -F'"' '{print $2}')
 
-install-go-bin() {
-    for pkg in "${@}"; do
-        GOBIN="${PWD}/bin" go install "${pkg}" &
-    done
-    wait
+    install-go-bin "${tools[@]}"
 }
 
 # This variable is used, but shellcheck can't tell.
