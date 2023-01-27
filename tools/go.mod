@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/golangci/golangci-lint v1.50.1
 	github.com/rinchsan/gosimports v0.3.4
-	gotest.tools/gotestsum v1.8.2
+	gotest.tools/gotestsum v1.9.0
 )
 
 require (
