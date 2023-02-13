@@ -13,8 +13,8 @@ github.com/alecthomas/kong v0.7.1/go.mod h1:n1iCIO2xS46oE8ZfYCNDqdR0b0wZNrXAIAqr
 github.com/alecthomas/repr v0.1.0 h1:ENn2e1+J3k09gyj2shc0dHr/yjaWSHRlrJ4DPMevDqE=
 github.com/cenkalti/backoff/v4 v4.2.0 h1:HN5dHm3WBOgndBH6E8V0q2jIYIR3s9yglV8k/+MN3u4=
 github.com/cenkalti/backoff/v4 v4.2.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
-github.com/circleci/ex v1.0.5503-c6cbbe1 h1:DCzn5VlGw0rG5JpZQPtxaIJYqeU3S+yuarYCt1I3RN4=
-github.com/circleci/ex v1.0.5503-c6cbbe1/go.mod h1:B6xFArCv0M8xIU9TMGkPhMs7Hiqglij7Hue061+LU5E=
+github.com/circleci/ex v1.0.5654-c2f1747 h1:fJaD+DPGya+WL7fJUg1PE82s1tipW+oVJ8MCzUH3nqs=
+github.com/circleci/ex v1.0.5654-c2f1747/go.mod h1:24kF95ORmsZPj6s7tOl8sQd+T2j2hRJFeKLr1jHsZT8=
 github.com/cockroachdb/apd v1.1.0 h1:3LFP3629v+1aKXU5Q37mxmRxX/pIu1nijXydLShEq5I=
 github.com/cockroachdb/apd v1.1.0/go.mod h1:8Sl8LxpKi29FqWXR16WEFZRNSz3SoPzUzeMeY4+DwBQ=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
