@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/alecthomas/kong v0.7.1
-	github.com/circleci/ex v1.0.6168-96e5998
+	github.com/circleci/ex v1.0.6255-d3fcb7d
 	github.com/gin-gonic/gin v1.9.0
 	github.com/google/uuid v1.3.0
 	golang.org/x/sync v0.1.0
@@ -28,7 +28,7 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/hellofresh/health-go/v4 v4.7.0 // indirect
 	github.com/honeycombio/beeline-go v1.11.1 // indirect
-	github.com/honeycombio/dynsampler-go v0.3.0 // indirect
+	github.com/honeycombio/dynsampler-go v0.4.0 // indirect
 	github.com/honeycombio/libhoney-go v1.18.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.0 // indirect
