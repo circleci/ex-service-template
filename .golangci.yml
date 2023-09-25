@@ -13,21 +13,29 @@ linters-settings:
   maligned:
     suggest-new: true
   depguard:
-    list-type: blacklist
-    include-go-root: true
-    packages:
-      - log
-      - github.com/davecgh/go-spew
-    packages-with-error-message:
-      - github.com/cenkalti/backof[f]: use github.com/cenkalti/backoff/v4 instead
-      - gotest.tools/assert: use gotest.tools/v3/assert instead
-      - gotest.tools/assert/cmp: use gotest.tools/v3/assert/cmp instead
-      - gotest.tools/env: use gotest.tools/v3/env instead
-      - gotest.tools/fs: use gotest.tools/v3/fs instead
-      - gotest.tools/golden: use gotest.tools/v3/golden instead
-      - gotest.tools/icmd: use gotest.tools/v3/icmd instead
-      - gotest.tools/poll: use gotest.tools/v3/poll instead
-      - gotest.tools/skip: use gotest.tools/v3/skip instead
+    rules:
+      main:
+        deny:
+          - pkg: log
+          - pkg: github.com/davecgh/go-spew
+          - pkg: github.com/cenkalti/backof[f]
+            desc: use github.com/cenkalti/backoff/v4 instead
+          - pkg: gotest.tools/assert
+            desc: use gotest.tools/v3/assert instead
+          - pkg: gotest.tools/assert/cmp
+            desc: use gotest.tools/v3/assert/cmp instead
+          - pkg: gotest.tools/env
+            desc: use gotest.tools/v3/env instead
+          - pkg: gotest.tools/fs
+            desc: use gotest.tools/v3/fs instead
+          - pkg: gotest.tools/golden
+            desc: use gotest.tools/v3/golden instead
+          - pkg: gotest.tools/icmd
+            desc: use gotest.tools/v3/icmd instead
+          - pkg: gotest.tools/poll
+            desc: use gotest.tools/v3/poll instead
+          - pkg: gotest.tools/skip
+            desc: use gotest.tools/v3/skip instead
   dupl:
     threshold: 100
   goconst:
