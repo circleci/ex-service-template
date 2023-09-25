@@ -44,7 +44,7 @@ workflows:
 executors:
   default:
     docker:
-      - image: &goimage cimg/go:1.18
+      - image: &goimage cimg/go:1.21
   ccc:
     docker:
       - image: circleci/command-convenience:0.1
@@ -68,7 +68,7 @@ jobs:
   lint:
     docker:
       - image: *goimage
-    resource_class: large
+    resource_class: xlarge
     steps:
       - setup
       - run:
@@ -86,7 +86,7 @@ jobs:
   build:
     docker:
       - image: *goimage
-    resource_class: large
+    resource_class: xlarge
     steps:
       - setup
       - run: ./do generate
@@ -140,12 +140,12 @@ jobs:
   test:
     docker:
       - image: *goimage
-      - image: circleci/postgres:13.3-ram
+      - image: cimg/postgres:13.3
         environment:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
           POSTGRES_DB: dbname
-    resource_class: large
+    resource_class: xlarge
     steps:
       - setup
       - run: ./do create-stub-test-files

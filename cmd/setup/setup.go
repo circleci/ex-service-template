@@ -4,8 +4,6 @@ package setup
 import (
 	"context"
 	"fmt"
-	"math/rand"
-	"time"
 	_ "time/tzdata" // include embedded timezone data
 
 	"github.com/circleci/ex/config/o11y"
@@ -35,7 +33,6 @@ type CLI struct {
 }
 
 func init() {
-	rand.Seed(time.Now().Unix())
 	err := rootcerts.UpdateDefaultTransport()
 	if err != nil {
 		panic(fmt.Errorf("failed to inject rootcerts: %w", err))

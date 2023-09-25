@@ -30,9 +30,7 @@ func TestE2E(t *testing.T) {
 		fix = runServices(ctx, t, dbfix)
 	}))
 	t.Cleanup(func() {
-		t.Run("Stop services", func(t *testing.T) {
-			fix.Stop(t)
-		})
+		fix.Stop(t)
 	})
 
 	t.Run("Test ping pong", func(t *testing.T) {

@@ -3,11 +3,8 @@ package acceptance
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"os"
-	"strconv"
 	"testing"
-	"time"
 
 	"github.com/circleci/ex/testing/compiler"
 )
@@ -46,22 +43,5 @@ func runTests(m *testing.M) (int, error) {
 
 	fmt.Printf("Using 'api' test binary: %q\n", apiTestBinary)
 
-	seed := randomSeed()
-	fmt.Printf("Using random seed: %v\n", seed)
-	rand.Seed(seed)
-
 	return m.Run(), nil
-}
-
-func randomSeed() int64 {
-	seed := os.Getenv("TEST_RANDOM_SEED")
-	if seed == "" {
-		return time.Now().UnixNano()
-	}
-	value, err := strconv.ParseInt(seed, 10, 64)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "invalid seed %v: %s", seed, err)
-		return time.Now().UnixNano()
-	}
-	return value
 }
