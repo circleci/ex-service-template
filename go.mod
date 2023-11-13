@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/alecthomas/kong v0.8.1
-	github.com/circleci/ex v1.0.8223-e2e654d
+	github.com/circleci/ex v1.0.8262-ca54cf8
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.4.0
 	golang.org/x/sync v0.5.0
