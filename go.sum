@@ -21,8 +21,8 @@ github.com/cenkalti/backoff/v4 v4.2.1/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyY
 github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06/go.mod h1:DH46F32mSOjUmXrMHnKwZdA8wcEefY7UVqBKYGjpdQY=
 github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 h1:qSGYFH7+jGhDF8vLC+iwCD4WpbV1EBDSzWkJODFLams=
 github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311/go.mod h1:b583jCggY9gE99b6G5LEC39OIiVsWj+R97kbl5odCEk=
-github.com/circleci/ex v1.0.8223-e2e654d h1:kdztHDgqvoU+legm+I4tnYRIB82BV4J21GD+JQXPxno=
-github.com/circleci/ex v1.0.8223-e2e654d/go.mod h1:qeOVeHnICv1DC0gz8pXF1jicQVLvwU4rZakJMlEbNmA=
+github.com/circleci/ex v1.0.8262-ca54cf8 h1:u1sGvgyU06yLXx+B+8/qOeuzuj2lAt9steQeep8HFao=
+github.com/circleci/ex v1.0.8262-ca54cf8/go.mod h1:OUIVfeKEqdd4ZlhLvhZ3yfq3fbTCEx7lcodTmPkb7EA=
 github.com/cockroachdb/apd v1.1.0 h1:3LFP3629v+1aKXU5Q37mxmRxX/pIu1nijXydLShEq5I=
 github.com/cockroachdb/apd v1.1.0/go.mod h1:8Sl8LxpKi29FqWXR16WEFZRNSz3SoPzUzeMeY4+DwBQ=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
