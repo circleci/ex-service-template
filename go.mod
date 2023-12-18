@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/kong v0.8.1
 	github.com/circleci/ex v1.0.8262-ca54cf8
 	github.com/gin-gonic/gin v1.9.1
-	github.com/google/uuid v1.4.0
+	github.com/google/uuid v1.5.0
 	golang.org/x/sync v0.5.0
 	gotest.tools/v3 v3.5.1
 )
