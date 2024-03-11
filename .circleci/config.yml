@@ -156,7 +156,7 @@ jobs:
 
   db-schema:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2004:2023.10.1
     steps:
       - checkout
       - run:
