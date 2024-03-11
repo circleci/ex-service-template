@@ -140,7 +140,7 @@ jobs:
   test:
     docker:
       - image: *goimage
-      - image: cimg/postgres:13.3
+      - image: cimg/postgres:13.14
         environment:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
