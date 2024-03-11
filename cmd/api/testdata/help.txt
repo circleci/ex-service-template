@@ -1,4 +1,4 @@
-Usage: test-app
+Usage: test-app [flags]
 
 Flags:
   -h, --help                  Show context-sensitive help.
