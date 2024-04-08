@@ -7,7 +7,7 @@ require (
 	github.com/circleci/ex v1.0.9063-78b6f63
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.6.0
-	golang.org/x/sync v0.6.0
+	golang.org/x/sync v0.7.0
 	gotest.tools/v3 v3.5.1
 )
 
