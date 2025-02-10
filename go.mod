@@ -3,7 +3,7 @@ module github.com/circleci/ex-service-template
 go 1.22.5
 
 require (
-	github.com/alecthomas/kong v1.7.0
+	github.com/alecthomas/kong v1.8.0
 	github.com/circleci/ex v1.0.11135-c03af1d
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
