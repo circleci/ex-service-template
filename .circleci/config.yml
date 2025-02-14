@@ -48,7 +48,7 @@ executors:
       - image: &goimage cimg/go:1.24
   ccc:
     docker:
-      - image: circleci/command-convenience:0.1
+      - image: circleci/command-convenience:experimental-enshrinkify-ccc
         auth:
           username: $DOCKER_HUB_USER
           password: $DOCKER_HUB_PASSWORD
