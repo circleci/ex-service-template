@@ -13,7 +13,6 @@ import (
 	"github.com/circleci/ex/system"
 	"github.com/circleci/ex/termination"
 
-	/* todo rename 'ex-service-template' to 'your-service' */
 	"github.com/circleci/ex-service-template/api/api"
 	"github.com/circleci/ex-service-template/books"
 	"github.com/circleci/ex-service-template/cmd"

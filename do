@@ -3,7 +3,8 @@ set -eu -o pipefail
 
 _version=1.0.${CIRCLE_BUILD_NUM-0}-$(git rev-parse --short HEAD 2>/dev/null || echo latest)
 reportDir="test-reports"
-serviceName="ex-service-template"
+serviceName="ex-service-template" #FIXME: update with the new service name
+package="github.com/circleci/${serviceName}"
 
 make-target() {
     mkdir -p "target"
@@ -35,7 +36,7 @@ help_build="Build the binaries for production"
 build() {
     local date ldflags
     date=$(date "+%FT%T%z")
-    ldflags="-s -w -X github.com/circleci/${serviceName}/cmd.Version=$_version -X github.com/circleci/${serviceName}/cmd.Date=$date"
+    ldflags="-s -w -X ${package}/cmd.Version=$_version -X ${package}/cmd.Date=$date"
 
     GOOS=linux GOARCH=amd64 binary "$ldflags" &
 
@@ -59,7 +60,7 @@ build() {
 # shellcheck disable=SC2034
 help_lint="Run golanci-lint to lint go files."
 lint() {
-    exec ./bin/golangci-lint run "${@:-./...}"
+    exec go tool golangci-lint run "${@:-./...}"
 }
 
 # This variable is used, but shellcheck can't tell.
@@ -79,26 +80,25 @@ help_test="Run normal unit tests"
 test() {
     mkdir -p "${reportDir}"
     # -count=1 is used to forcibly disable test result caching
-    ./bin/gotestsum --junitfile="${reportDir}/junit.xml" -- -race -count=1 "${@:-./...}"
+    go tool gotestsum --junitfile="${reportDir}/junit.xml" -- -race -count=1 "${@:-./...}"
 }
 
 # This variable is used, but shellcheck can't tell.
 # shellcheck disable=SC2034
 help_run_goimports="Run goimports for package"
 run-goimports () {
-  ./bin/gosimports -local "github.com/circleci/ex-service-template" -w
+  go tool gosimports -local "${package}" -w .
 }
 
 # This variable is used, but shellcheck can't tell.
 # shellcheck disable=SC2034
 help_godoc="Run godoc to read documentation."
 godoc() {
-    install-go-bin "golang.org/x/tools/cmd/godoc@v0.1.3"
     local url
-    url="http://localhost:6060/pkg/github.com/circleci/${serviceName}/"
+    url="http://localhost:6060/pkg/${package}/"
     command -v xdg-open && xdg-open $url &
     command -v open && open $url &
-    ./bin/godoc -http=127.0.0.1:6060
+    go tool godoc -http=127.0.0.1:6060
 }
 
 # This variable is used, but shellcheck can't tell.
@@ -106,29 +106,6 @@ godoc() {
 help_go_mod_tidy="Run 'go mod tidy' to clean up module files."
 go-mod-tidy() {
     go mod tidy -v
-}
-
-install-go-bin() {
-    local binDir="$PWD/bin"
-    for pkg in "${@}"; do
-        echo "${pkg}"
-        (
-          cd tools
-          GOBIN="${binDir}" go install "${pkg}"
-        )
-    done
-}
-
-# This variable is used, but shellcheck can't tell.
-# shellcheck disable=SC2034
-help_install_devtools="Install tools that other tasks expect into ./bin"
-install-devtools() {
-    local tools=()
-    while IFS='' read -r value; do
-        tools+=("$value")
-    done < <(grep _ tools/tools.go | awk -F'"' '{print $2}')
-
-    install-go-bin "${tools[@]}"
 }
 
 # This variable is used, but shellcheck can't tell.
@@ -143,14 +120,6 @@ create-stub-test-files() {
     # shellcheck disable=SC2016
     go list -f '{{if not .TestGoFiles}}{{.Name}} {{.Dir}}{{end}}' ./... | \
         xargs -r --max-args=2 bash -c 'echo "package $0" > "$1/pkg_test.go"'
-}
-
-# This variable is used, but shellcheck can't tell.
-# shellcheck disable=SC2034
-help_run_goimports="Run goimports for package"
-run-goimports () {
-  command -v ./bin/goimports || install-go-bin "golang.org/x/tools/cmd/goimports@v0.0.0-20201208183658-cc330816fc52"
-  ./bin/goimports -local "github.com/circleci/${serviceName}" -w "${@:-.}"
 }
 
 # This variable is used, but shellcheck can't tell.

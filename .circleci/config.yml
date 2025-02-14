@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@5.1.1
+  go: circleci/go@2.2.4
 
 workflows:
   main-workflow:
@@ -77,6 +78,9 @@ jobs:
       - run:
           name: go tidy
           command: go mod tidy -v
+      - run:
+          name: run goimports
+          command: ./do run-goimports
       - run:
           name: verify no changes
           command: git diff --ignore-matching-lines='Generated on ' --exit-code
@@ -270,8 +274,9 @@ commands:
   setup:
     steps:
       - checkout
-      - run: go mod download
-      - run: ./do install-devtools
+      - go/with-cache:
+          steps:
+            - run: go mod download
 
   store_results:
     steps:
