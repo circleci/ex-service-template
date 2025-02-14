@@ -4,8 +4,7 @@ run:
 
 # Do not treat these as gospel, adjust as appropriate
 linters-settings:
-  govet:
-    check-shadowing: false
+  shadow: false
   golint:
     min-confidence: 0
   gocyclo:
