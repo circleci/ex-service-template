@@ -6,5 +6,21 @@
   "postUpdateOptions": [
     "gomodTidy",
     "gomodUpdateImportPaths"
+  ],
+  // NOTE: DONT COPY THIS TO YOUR SERVICE - ONLY MEANT FOR UPDATING THE TEMPLATE
+  "timezone": "America/Toronto",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeStrategy": "squash",
+      "automergeSchedule": [
+        "after 9am and before 3pm on monday",
+        "after 9am and before 3pm on tuesday",
+        "after 9am and before 3pm on wednesday",
+        "after 9am and before 3pm on thursday",
+        "after 9am and before 3pm on friday"
+      ]
+    }
   ]
 }
