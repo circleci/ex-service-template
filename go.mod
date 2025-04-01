@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.24.1
 
 require (
-	github.com/alecthomas/kong v1.9.0
+	github.com/alecthomas/kong v1.10.0
 	github.com/circleci/ex v1.0.11135-c03af1d
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
