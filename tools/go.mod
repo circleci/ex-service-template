@@ -7,7 +7,7 @@ toolchain go1.24.2
 require (
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/rinchsan/gosimports v0.3.8
-	gotest.tools/gotestsum v1.12.1
+	gotest.tools/gotestsum v1.12.2
 )
 
 require (
