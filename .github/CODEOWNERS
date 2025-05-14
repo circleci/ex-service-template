@@ -1,8 +1,2 @@
 * @circleci/execution
 
-# removed owners to allow Renovate auto-merge
-.circleci/config.yml
-go.mod
-go.sum
-tools/go.mod
-tools/go.sum
